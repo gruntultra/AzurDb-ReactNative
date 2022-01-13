@@ -1,10 +1,10 @@
 # AzurDb-ReactNative
 Converted Azur Lane Database Android App to React Native
 
-For Android
--npx i
--npx react-native run-android
+For Android </br>
+npx i </br>
+npx react-native run-android </br>
 
-If facing issues
--cd android
--./gradlew clean
+If facing issues </br>
+cd android </br>
+./gradlew clean </br>
