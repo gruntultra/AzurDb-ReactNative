@@ -57,7 +57,7 @@ class Home extends React.Component<Iprops,IState> {
 
 
   async componentDidMount() {
-    let value = await this.getData()
+    let value = await this.getData() //does not work due to exceeding 2mb limit set by android
     let gearVal = await this.getGearData()
     if(value == null || gearVal == null) {
       this.storeData()
@@ -109,7 +109,7 @@ class Home extends React.Component<Iprops,IState> {
       let val = await AsyncStorage.getItem('@jsonFile')
       return val
     } catch(e) {
-
+      console.log(e)
     }
   }
 
@@ -255,7 +255,7 @@ class Home extends React.Component<Iprops,IState> {
       }, shadowOpacity: 0.3, shadowRadius: 20,opacity, transform:[{scale}]}} onPress={() => this.props.route.params.navigation.navigate('Gear', {gearData: item, navigation: this.props.route.params.navigation}, {title:item.id})}>
           <Image source={{uri: item.image}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}}/>
           <View style={{width: '100%',  flexShrink: 1, flex: 1}}>
-            <Text style={{fontSize: 14, fontWeight: '700', flexWrap:'wrap'}}>{item.id}</Text>
+            <Text style={{fontSize: 14, fontWeight: '700', flexWrap:'wrap'}}>{item.names.wiki}</Text>
             <Text style={{fontSize: 12, opacity: .7}}>{item.category}</Text>
           </View>
       </AnimatedTouchable>);
