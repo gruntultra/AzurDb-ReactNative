@@ -166,7 +166,7 @@ class Home extends React.Component<Iprops,IState> {
       }
     )
     return(
-      <AnimatedTouchable style ={{flexDirection: 'row', padding: 20, marginBottom: 20, backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: 12,
+      <AnimatedTouchable style ={{flexDirection: 'row', padding: 20, marginBottom: 20, backgroundColor: 'rgba(173,216,230,0.8)', borderRadius: 12,
       shadowColor: "#000", shadowOffset: {
         width: 0, height: 10
       }, shadowOpacity: 0.3, shadowRadius: 20,opacity, transform:[{scale}]}} onPress={() => this.props.route.params.navigation.navigate('Ship', {shipData: item, navigation: this.props.route.params.navigation}, {title:item.names.en})}>

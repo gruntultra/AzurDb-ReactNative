@@ -215,7 +215,7 @@ class Ship extends React.Component<Iprops,IState> {
         let containerColor = this.getContainerColor(this.state.shipData.nationality)
         return(
             <ScrollView style={styles.safeAreaViewStyle}>
-                <View style={{flex: 1,alignItems: 'flex-start', justifyContent: 'flex-start',  marginBottom: -50, width, height: 250, paddingTop: 50}}>
+                <View style={{flex: 1,alignItems: 'flex-start', justifyContent: 'flex-start',  marginBottom: -50, width, height: 250, paddingTop: 50, backgroundColor: '#ADD8E6'}}>
                     <View style={{flexDirection: 'row'}}>
                         <Image source={this._getFactionPicture(this.state.shipData.nationality)} resizeMode='contain' style={{width: 60, height: 60}}/>
                         <View style={{flexDirection: 'column', flex: 1}}>
@@ -350,7 +350,7 @@ class Ship extends React.Component<Iprops,IState> {
                         </View>
                     )
                 }
-                <View style={{flexDirection: 'row', padding: 20, marginBottom: 20, backgroundColor: 'rgba(255,255,255,0.8)', borderRadius: 12,
+                <View style={{flexDirection: 'row', padding: 20, marginBottom: 20, backgroundColor: 'rgba(173,216,230,0.8)', borderRadius: 12,
                 shadowColor: "#000", shadowOffset: {
                     width: 0, height: 10
                 }, shadowOpacity: 0.3, shadowRadius: 20, marginHorizontal: 20}}>
@@ -368,7 +368,8 @@ class Ship extends React.Component<Iprops,IState> {
 
 const styles = StyleSheet.create({
     safeAreaViewStyle: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#DCAE96'
     },
     textStyle: {
         fontWeight: 'bold',

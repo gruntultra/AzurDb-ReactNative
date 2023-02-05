@@ -21,7 +21,11 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
+        mavenCentral {
+            content {
+                excludeGroup("com.facebook.react")
+            }
+        }
         mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
