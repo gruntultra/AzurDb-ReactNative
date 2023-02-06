@@ -1,23 +1,16 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
-  ActivityIndicator,
-  Alert,
   Animated,
-  FlatList,
+  EmitterSubscription,
   Image,
-  ImagePropTypes,
-  SafeAreaView,
+  Keyboard,
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
@@ -25,6 +18,7 @@ import LottieView from 'lottie-react-native';
 
 interface Iprops {
   navigation: any
+  route: any
 }
 
 interface IState{
@@ -37,9 +31,13 @@ interface IState{
   gearData: any
   gearBackup: any
   gearQuery: any
+  keyBoardUp: boolean;
 }
 
 class Home extends React.Component<Iprops,IState> {
+  keyboardDidShowSubscription?: EmitterSubscription;
+  keyboardDidHideSubscription?: EmitterSubscription;
+
   constructor(props: Iprops) {
     super(props)
     this.state ={
@@ -52,11 +50,36 @@ class Home extends React.Component<Iprops,IState> {
       gearData: {},
       gearBackup: {},
       gearQuery: null,
+      keyBoardUp: false,
     }
+  }
+
+  _keyboardDidShow() {
+    this.setState({
+      keyBoardUp: true
+    });
+  }
+
+  _keyboardDidHide() {
+    this.setState({
+      keyBoardUp: false
+    });
   }
 
 
   async componentDidMount() {
+    this.keyboardDidShowSubscription = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        this.setState({keyBoardUp: true});
+      },
+    );
+    this.keyboardDidHideSubscription = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        this.setState({keyBoardUp: false});
+      },
+    );
     let value = await this.getData() //does not work due to exceeding 2mb limit set by android
     let gearVal = await this.getGearData()
     if(value == null || gearVal == null) {
@@ -134,7 +157,7 @@ class Home extends React.Component<Iprops,IState> {
     } else return '#000'
   }
 
-  _renderItem = ({item, index}) => {
+  _renderItem = ({item, index}:{item: any, index: number}) => {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     let colorType = this.getColor(item.rarity)
     const inputRange = [
@@ -180,7 +203,7 @@ class Home extends React.Component<Iprops,IState> {
     )
   }
 
-  setFlatList= (event) => {
+  setFlatList= (event: any) => {
     let query = event
     this.setState({
       query: query,
@@ -192,14 +215,14 @@ class Home extends React.Component<Iprops,IState> {
     } else {
       let dataToSearch = this.state.dataBackup
       query = query.toLowerCase()
-      dataToSearch = dataToSearch.filter(x => x.names.en.toLowerCase().match(query))
+      dataToSearch = dataToSearch.filter((x:any) => x.names.en.toLowerCase().match(query))
       this.setState({
         shipsData: dataToSearch
       })
     }
   }
 
-  setGearList= (event) => {
+  setGearList= (event: any) => {
     let query = event
     this.setState({
       gearQuery: query,
@@ -211,14 +234,19 @@ class Home extends React.Component<Iprops,IState> {
     } else {
       let dataToSearch = this.state.gearBackup
       query = query.toLowerCase()
-      dataToSearch = dataToSearch.filter(x => x.id.toLowerCase().match(query))
+      dataToSearch = dataToSearch.filter((x: any) => x.id.toLowerCase().match(query))
       this.setState({
         gearData: dataToSearch
       })
     }
   }
 
-  _renderGearItem= ({item, index}) => {
+  componentWillUnmount() {
+    this.keyboardDidShowSubscription?.remove();
+    this.keyboardDidHideSubscription?.remove();
+  }
+
+  _renderGearItem= ({item, index}:{item:any, index: number}) => {
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
     const inputRange = [
       -1,
@@ -259,6 +287,25 @@ class Home extends React.Component<Iprops,IState> {
             <Text style={{fontSize: 12, opacity: .7}}>{item.category}</Text>
           </View>
       </AnimatedTouchable>);
+  }
+
+  renderBottomBar() {
+    return(
+      !this.state.keyBoardUp && <View style={{height: 60,
+        width: '100%',
+        flexDirection: 'row',
+        backgroundColor: '#fff',
+        justifyContent: 'space-evenly' }}>
+        <TouchableOpacity style={{marginTop: 20, flexDirection: 'row'}} onPress={() => this.setState({selectedTab: true, scrollY: new Animated.Value(0)})}>
+          <Ionicons name='boat-outline' size={22} color="#000"/>
+          <Text style={{fontWeight: this.state.selectedTab ? "bold" : "normal"}}>Ships</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{marginTop: 20, flexDirection: 'row'}} onPress={() => this.setState({selectedTab: false, scrollY: new Animated.Value(0)})}>
+          <Ionicons name='cog-outline' size={22} color="#000"/>
+          <Text style={{fontWeight: this.state.selectedTab ? "normal" : "bold"}}>Gear</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   render() {
@@ -329,21 +376,8 @@ class Home extends React.Component<Iprops,IState> {
               </View>
              )
           }
-
-          <View style={{height: 60,
-            width: '100%',
-            flexDirection: 'row',
-            backgroundColor: '#fff',
-            justifyContent: 'space-evenly', }}>
-            <TouchableOpacity style={{marginTop: 20, flexDirection: 'row'}} onPress={() => this.setState({selectedTab: true, scrollY: new Animated.Value(0)})}>
-              <Ionicons name='boat-outline' size={22} color="#000"/>
-              <Text style={{fontWeight: this.state.selectedTab ? "bold" : "normal"}}>Ships</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{marginTop: 20, flexDirection: 'row'}} onPress={() => this.setState({selectedTab: false, scrollY: new Animated.Value(0)})}>
-              <Ionicons name='cog-outline' size={22} color="#000"/>
-              <Text style={{fontWeight: this.state.selectedTab ? "normal" : "bold"}}>Gear</Text>
-            </TouchableOpacity>
-          </View>
+          {this.renderBottomBar()}
+          
         </LinearGradient>
       );
     }

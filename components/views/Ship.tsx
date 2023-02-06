@@ -1,27 +1,21 @@
 import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
-  ActivityIndicator,
-  Alert,
   Animated,
   Dimensions,
   FlatList,
   Image,
   ImageBackground,
-  ImagePropTypes,
   LogBox,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from 'react-native';
 
 
 interface Iprops {
+    route: any
 }
 
 interface IState{
@@ -64,7 +58,7 @@ class Ship extends React.Component<Iprops,IState> {
     componentDidMount() {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         const {shipData} = this.props.route.params
-        const data = shipData.skins.map((image, index)=> ({
+        const data = shipData.skins.map((image:any, index: number)=> ({
             key: String(index),
             photo: image.image,
             avatar_url: image.chibi,
@@ -76,7 +70,7 @@ class Ship extends React.Component<Iprops,IState> {
         })
     }
 
-    _renderItem = ({item, index}) => {
+    _renderItem = ({item, index}:{item: any, index: number}) => {
         const inputRange = [
             (index-1) * width,
             index* width,
@@ -116,83 +110,90 @@ class Ship extends React.Component<Iprops,IState> {
         )
     }
 
-    _renderSkills= ({item, index}) => {
+    _renderSkills= ({item, index}:{item:any, index: number}) => {
         return(
-            <View style={{flex: 1, flexDirection: 'row' }} key={index}>
-                <Image
-                    source={{uri: item.icon}}
-                    resizeMode='contain'
-                    style={{width: 60, height: 60, marginVertical: 30, marginHorizontal: 5}}
-                />
-                <View style ={{width: '75%',flexDirection: 'column', margin: 10}}>
+            <View style={{flex: 1, flexDirection: 'row', marginBottom: 10 }} key={index}>
+                <View style={{width: '25%', justifyContent: 'center', alignItems: 'center'}}>
+                    <Image
+                        source={{uri: item.icon}}
+                        resizeMode='contain'
+                        style={{width: 60, height: 60, marginVertical: 30, marginHorizontal: 5}}
+                    />
+                </View>
+                <View style ={{width: '75%',flexDirection: 'column', flexShrink: 1, flexGrow: 1}}>
                     <Text style={{fontSize: 14, color: "#000", fontWeight:'bold'}}>{item.names.en}</Text>
-                    <Text style={{flexShrink: 1, flexWrap: 'wrap'}}>{item.description}</Text>
+                    <Text style={{ flexWrap: 'wrap'}}>{item.description}</Text>
                 </View>
             </View>
         )
     }
 
-    _getFactionPicture(faction) {
-        if(faction == "Iron Blood") {
-            return logo.faction.de
-        } else if (faction == "Royal Navy") {
-            return logo.faction.en
-        } else if (faction == "Bilibili ") {
-            return logo.faction.bi
-        } else if (faction == "Eagle Union") {
-            return logo.faction.Us
-        } else if (faction == "Sakura Empire") {
-            return logo.faction.Jp
-        } else if (faction == "Dragon Empery") {
-            return logo.faction.cn
-        } else if (faction == "Northern Parliament") {
-            return logo.faction.Sn
-        }else if (faction == "Iris Libre") {
-            return logo.faction.Ff
-        }else if (faction == "Vichya Dominion") {
-            return logo.faction.Vf
-        }else if (faction == "Sardegna Empire") {
-            return logo.faction.Rn
-        }else {
-            return logo.faction.other
+    _getFactionPicture(faction: string) {
+        switch(faction) {
+            case "Iron Blood":
+                return logo.faction.de
+            case "Royal Navy":
+                return logo.faction.en
+            case "Bilibili":
+                return logo.faction.bi
+            case "Eagle Union":
+                return logo.faction.Us
+            case "Sakura Empire":
+                return logo.faction.Jp
+            case "Dragon Empery":
+                return logo.faction.cn
+            case "Northern Parliament":
+                return logo.faction.Sn
+            case "Iris Libre":
+                return logo.faction.Ff
+            case "Vichya Dominion":
+                return logo.faction.Vf
+            case "Sardegna Empire":
+                return logo.faction.Rn
+            default:
+                return logo.faction.other
         }
     }
 
     getColor(rarity: string) {
-        if(rarity == 'Normal') {
-          return '#fff'
-        } else if (rarity == 'Rare') {
-          return '#00CED1'
-        } else if (rarity == 'Elite') {
-          return '#7F00FF'
-        } else if (rarity == 'Super Rare') {
-          return '#FFA500'
-        } else return '#000'
+        switch(rarity) {
+            case 'Normal':
+                return '#fff'
+            case 'Rare':
+                return '#00CED1'
+            case 'Elite':
+                return '#7F00FF'
+            case 'Super Rare':
+                return '#FFA500'
+            default: 
+                return '#000'
+        }
       }
 
-      getContainerColor(nat) {
-        if(nat == "Iron Blood") {
-            return "#d59c9c"
-        } else if (nat == "Royal Navy") {
-        return "#d6e1f8"
-        } else if (nat == "Bilibili ") {
-            return "#cfd9ec"
-        } else if (nat == "Eagle Union") {
-            return "#0062aa"
-        } else if (nat == "Sakura Empire") {
-            return "#ffc0ca"
-        } else if (nat == "Dragon Empery") {
-            return "red"
-        } else if (nat == "Northern Parliament") {
-            return "#E8E2E2"
-        }else if (nat == "Iris Libre") {
-            return "#FFFFA7"
-        }else if (nat == "Vichya Dominion") {
-            return "#D2BD96"
-        }else if (nat == "Sardegna Empire") {
-            return "#C7F6B6"
-        }else {
-            return "#FDFCFC"
+      getContainerColor(nat: string) {
+        switch(nat) {
+            case "Iron Blood":
+                return "#d59c9c"
+            case "Royal Navy":
+                return "#d6e1f8"
+            case "Bilibili":
+                return "#cfd9ec"
+            case "Eagle Union":
+                return "#0062aa"
+            case "Sakura Empire":
+                return "#ffc0ca"
+            case "Dragon Empery":
+                return "red"
+            case "Northern Parliament":
+                return "#E8E2E2"
+            case "Iris Libre":
+                return "#FFFFA7"
+            case "Vichya Dominion":
+                return "#D2BD96"
+            case "Sardegna Empire":
+                return "#C7F6B6"
+            default:
+                return "#FDFCFC"
         }
       }
 
@@ -216,9 +217,9 @@ class Ship extends React.Component<Iprops,IState> {
         return(
             <ScrollView style={styles.safeAreaViewStyle}>
                 <View style={{flex: 1,alignItems: 'flex-start', justifyContent: 'flex-start',  marginBottom: -50, width, height: 250, paddingTop: 50, backgroundColor: '#ADD8E6'}}>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row', marginLeft: 30}}>
                         <Image source={this._getFactionPicture(this.state.shipData.nationality)} resizeMode='contain' style={{width: 60, height: 60}}/>
-                        <View style={{flexDirection: 'column', flex: 1}}>
+                        <View style={{flexDirection: 'column', flex: 1, marginLeft: 20}}>
                             <Text style={{fontSize: 30, fontWeight: '700', flexShrink: 1}}>{name}</Text>
                             <Text style={{fontSize: 15, fontWeight: '700'}}>{hulltype}</Text>
                             <Text style={{fontSize: 10, opacity: .8, color: colorType}}>{rarity}</Text>
@@ -239,7 +240,7 @@ class Ship extends React.Component<Iprops,IState> {
                 />
                 {
                     this.state.selectedTab ? (
-                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', margin: 10, backgroundColor: containerColor, borderRadius: 5}}>
+                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', margin: 20, padding: 30, backgroundColor: containerColor, borderRadius: 5}}>
                             <View style={{width: '100%', flexDirection: 'row'}}>
                                 <View style={{flex: 0.4, flexDirection: 'row', justifyContent:'flex-start', alignItems:'center'}}>
                                     <Image source={require('../../assets/images/health.png')} resizeMode='cover' style={{width: 15, height: 15, marginRight: 5}}/>
@@ -341,7 +342,7 @@ class Ship extends React.Component<Iprops,IState> {
                             </View>
                         </View>
                     ) : (
-                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', margin: 10, backgroundColor: containerColor, borderRadius: 5}}>
+                        <View style={{alignItems: 'flex-start', justifyContent: 'flex-start', margin: 20, padding: 30, backgroundColor: containerColor, borderRadius: 5}}>
                             <FlatList
                                 data={this.state.shipData.skills}
                                 keyExtractor={item => item.key}
