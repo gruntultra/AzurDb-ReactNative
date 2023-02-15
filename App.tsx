@@ -1,5 +1,5 @@
 import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   Image,
   SafeAreaView,
@@ -47,7 +47,7 @@ const Main = ({navigation}) => {
     <SafeAreaView style={styles.safeAreaViewStyle}>
       <View style={{position: 'absolute', top: 10, right: 10}}>
         <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-          <MaterialIcons name='settings' size={22} color="#000"/>
+          <Ionicons name='settings-outline' size={22} color="#000"/>
         </TouchableOpacity>
       </View>
       <View>
@@ -58,7 +58,7 @@ const Main = ({navigation}) => {
       onPress={() => navigation.navigate('Home', {navigation: navigation})}
        style={{backgroundColor: '#4169E1', padding: 20, width: '90%', borderRadius: 5, flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style ={{fontSize: 15, color:'#fff', fontFamily: 'Roboto-MediumItalic'}}>Welcome Commander</Text>
-        <MaterialIcons name='arrow-forward-ios' size={22} color="#000"/>
+        <Ionicons name='caret-forward-outline' size={22} color="#000"/>
       </TouchableOpacity>
     </SafeAreaView>
   );

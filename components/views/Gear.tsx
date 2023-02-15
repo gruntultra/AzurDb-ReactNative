@@ -58,13 +58,13 @@ class Gear extends React.Component<Iprops,IState> {
         const range = datStat && datStat.range && datStat.range.formatted
         const rateOfFire = datStat && datStat.rateOfFire && datStat.rateOfFire.formatted
         const spread = datStat && datStat.spread && datStat.spread.formatted
-        console.log("dat",datStat)
+        const nameOfWeapon = this.state.gearData.names && this.state.gearData.names.wiki
         return(
             <View style={{flex: 2}}>
                 <ScrollView>
                 <View style={{flex: 1,alignItems: 'flex-start', justifyContent: 'flex-start',  marginBottom: -50, paddingTop: 50}}>
                     <View style={{alignItems:'center', justifyContent: 'center', width,}}>
-                        <Text style={{fontSize: 20, fontWeight: '700', flexShrink: 1}}>{this.state.gearData.id}</Text>
+                        <Text style={{fontSize: 20, fontWeight: '700', flexShrink: 1}}>{nameOfWeapon}</Text>
                         <Text style={{fontSize: 20, fontWeight: '700'}}>{this.state.gearData.nationality}</Text>
                         <Text style={{fontSize: 15, fontWeight: '700', flexShrink: 1}}>{this.state.gearData.category}</Text>
                         <Image source={{uri: this.state.gearData.image}} resizeMode='contain' style={{width: 200, height: 200}}/>
