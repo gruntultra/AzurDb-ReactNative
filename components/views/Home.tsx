@@ -1,5 +1,6 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FastImage from 'react-native-fast-image'
 import {
   Animated,
   EmitterSubscription,
@@ -193,7 +194,7 @@ class Home extends React.Component<Iprops,IState> {
       shadowColor: "#000", shadowOffset: {
         width: 0, height: 10
       }, shadowOpacity: 0.3, shadowRadius: 20,opacity, transform:[{scale}]}} onPress={() => this.props.route.params.navigation.navigate('Ship', {shipData: item, navigation: this.props.route.params.navigation}, {title:item.names.en})}>
-          <Image source={{uri: item.thumbnail}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}}/>
+          <FastImage source={{uri: item.thumbnail, priority: FastImage.priority.normal}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}} resizeMode={FastImage.resizeMode.cover}/>
           <View>
             <Text style={{fontSize: 14, fontWeight: '700'}}>{item.names.en}</Text>
             <Text style={{fontSize: 12, opacity: .7}}>{item.hullType}</Text>
@@ -281,7 +282,7 @@ class Home extends React.Component<Iprops,IState> {
       shadowColor: "#000", shadowOffset: {
         width: 0, height: 10
       }, shadowOpacity: 0.3, shadowRadius: 20,opacity, transform:[{scale}]}} onPress={() => this.props.route.params.navigation.navigate('Gear', {gearData: item, navigation: this.props.route.params.navigation}, {title:item.id})}>
-          <Image source={{uri: item.image}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}}/>
+          <FastImage source={{uri: item.image,  priority: FastImage.priority.normal}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}}  resizeMode={FastImage.resizeMode.contain}/>
           <View style={{width: '100%',  flexShrink: 1, flex: 1}}>
             <Text style={{fontSize: 14, fontWeight: '700', flexWrap:'wrap'}}>{item.names.wiki}</Text>
             <Text style={{fontSize: 12, opacity: .7}}>{item.category}</Text>

@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 
 interface Iprops {
@@ -82,6 +83,7 @@ class Ship extends React.Component<Iprops,IState> {
                 -width * 0.7, 0, width * 0.7
             ]
         })
+        const AnimatedImage = Animated.createAnimatedComponent(FastImage);
         return(
             <View style={{width, justifyContent: 'center', alignItems: 'center'}}>
                 <View style={{borderRadius: 14, borderWidth: 10, borderColor:'#fff', shadowColor:'#000', shadowOffset: {
@@ -93,16 +95,18 @@ class Ship extends React.Component<Iprops,IState> {
                         <View style={{
                             width: ITEM_WIDTH, height: ITEM_HEIGHT, overflow:'hidden', alignItems: 'center',
                         }}>
-                            <Animated.Image
-                                source={{uri: item.photo}}
-                                style={{width: ITEM_WIDTH, height: ITEM_HEIGHT, resizeMode: 'contain', transform:[
+                            <AnimatedImage
+                                source={{uri: item.photo, priority: FastImage.priority.normal}}
+                                resizeMode={FastImage.resizeMode.contain}
+                                style={{width: ITEM_WIDTH, height: ITEM_HEIGHT, transform:[
                                     {translateX}
                                 ]}}
                             />
                         </View>
                     </ImageBackground>
-                    <Image
-                        source={{uri: item.avatar_url}}
+                    <FastImage
+                        source={{uri: item.avatar_url, priority: FastImage.priority.normal}}
+                        resizeMode={FastImage.resizeMode.cover}
                         style={{width: 60, height: 60, borderRadius: 60, borderWidth: 2, borderColor: 'white', position:'absolute', bottom: 0 }}
                     />
                 </View>
@@ -114,9 +118,9 @@ class Ship extends React.Component<Iprops,IState> {
         return(
             <View style={{flex: 1, flexDirection: 'row', marginBottom: 10 }} key={index}>
                 <View style={{width: '25%', justifyContent: 'center', alignItems: 'center'}}>
-                    <Image
-                        source={{uri: item.icon}}
-                        resizeMode='contain'
+                    <FastImage
+                        source={{uri: item.icon,priority: FastImage.priority.normal}}
+                        resizeMode={FastImage.resizeMode.contain}
                         style={{width: 60, height: 60, marginVertical: 30, marginHorizontal: 5}}
                     />
                 </View>
