@@ -61,9 +61,9 @@ class Ship extends React.Component<Iprops,IState> {
         const {shipData} = this.props.route.params
         const data = shipData.skins.map((image:any, index: number)=> ({
             key: String(index),
-            photo: image.image,
-            avatar_url: image.chibi,
-            background: image.background
+            photo: image.skinUrl,
+            avatar_url: image.skinUrl,
+            background: image.skinBg
         }))
         this.setState({
             shipData: shipData,
@@ -119,14 +119,14 @@ class Ship extends React.Component<Iprops,IState> {
             <View style={{flex: 1, flexDirection: 'row', marginBottom: 10 }} key={index}>
                 <View style={{width: '25%', justifyContent: 'center', alignItems: 'center'}}>
                     <FastImage
-                        source={{uri: item.icon,priority: FastImage.priority.normal}}
+                        source={{uri: item.skillImg,priority: FastImage.priority.normal}}
                         resizeMode={FastImage.resizeMode.contain}
                         style={{width: 60, height: 60, marginVertical: 30, marginHorizontal: 5}}
                     />
                 </View>
                 <View style ={{width: '75%',flexDirection: 'column', flexShrink: 1, flexGrow: 1}}>
-                    <Text style={{fontSize: 14, color: "#000", fontWeight:'bold'}}>{item.names.en}</Text>
-                    <Text style={{ flexWrap: 'wrap'}}>{item.description}</Text>
+                    <Text style={{fontSize: 14, color: "#000", fontWeight:'bold'}}>{item.skillName}</Text>
+                    <Text style={{ flexWrap: 'wrap'}}>{item.skillDesc}</Text>
                 </View>
             </View>
         )
@@ -202,27 +202,27 @@ class Ship extends React.Component<Iprops,IState> {
       }
 
     render() {
-        const name = this.state.shipData.names && this.state.shipData.names.en
-        const hulltype = this.state.shipData.hullType
+        const name = this.state.shipData.name
+        const hulltype = this.state.shipData.classification
         const rarity = this.state.shipData.rarity
         let colorType = this.getColor(rarity)
-        let statsHealth = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.health
-        let statsantiair = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.antiair
-        let statsaviation = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.aviation
-        let statsevasion = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.evasion
-        let statsfirepower = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.firepower
-        let statsluck = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.luck
-        let statsreload = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.reload
-        let statsspeed = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.speed
-        let statstorpedo = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.torpedo
-        let statsantisubmarineWarfare = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.antisubmarineWarfare
-        let statsarmor = this.state.shipData.stats && this.state.shipData.stats.level125 && this.state.shipData.stats.level125.armor
-        let containerColor = this.getContainerColor(this.state.shipData.nationality)
+        let statsHealth = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].health
+        let statsantiair = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].antiair
+        let statsaviation = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].aviation
+        let statsevasion = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].evasion
+        let statsfirepower = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].firepower
+        let statsluck = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].luck
+        let statsreload = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].reload
+        let statsspeed = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].speed
+        let statstorpedo = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].torpedo
+        let statsantisubmarineWarfare = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].antisub
+        let statsarmor = this.state.shipData.shipStats && this.state.shipData.shipStats[0] && this.state.shipData.shipStats[0].armor
+        let containerColor = this.getContainerColor(this.state.shipData.faction)
         return(
             <ScrollView style={styles.safeAreaViewStyle}>
                 <View style={{flex: 1,alignItems: 'flex-start', justifyContent: 'flex-start',  marginBottom: -50, width, height: 250, paddingTop: 50, backgroundColor: '#ADD8E6'}}>
                     <View style={{flexDirection: 'row', marginLeft: 30}}>
-                        <Image source={this._getFactionPicture(this.state.shipData.nationality)} resizeMode='contain' style={{width: 60, height: 60}}/>
+                        <Image source={this._getFactionPicture(this.state.shipData.faction)} resizeMode='contain' style={{width: 60, height: 60}}/>
                         <View style={{flexDirection: 'column', flex: 1, marginLeft: 20}}>
                             <Text style={{fontSize: 30, fontWeight: '700', flexShrink: 1}}>{name}</Text>
                             <Text style={{fontSize: 15, fontWeight: '700'}}>{hulltype}</Text>

@@ -81,9 +81,10 @@ class Home extends React.Component<Iprops,IState> {
         this.setState({keyBoardUp: false});
       },
     );
-    let value = await this.getData() //does not work due to exceeding 2mb limit set by android
+    let value = this.getData() //does not work due to exceeding 2mb limit set by android
     let gearVal = await this.getGearData()
     if(value == null || gearVal == null) {
+      
       this.storeData()
     } else {
       this.setState({
@@ -128,13 +129,9 @@ class Home extends React.Component<Iprops,IState> {
         })
   }
 
-  getData = async () => {
-    try{
-      let val = await AsyncStorage.getItem('@jsonFile')
-      return val
-    } catch(e) {
-      console.log(e)
-    }
+  getData =  () => {
+    const jsonDat = require("../../assets/json/ShipData16July.json")
+    return jsonDat
   }
 
   getGearData = async () => {
@@ -193,11 +190,11 @@ class Home extends React.Component<Iprops,IState> {
       <AnimatedTouchable style ={{flexDirection: 'row', padding: 20, marginBottom: 20, backgroundColor: 'rgba(173,216,230,0.8)', borderRadius: 12,
       shadowColor: "#000", shadowOffset: {
         width: 0, height: 10
-      }, shadowOpacity: 0.3, shadowRadius: 20,opacity, transform:[{scale}]}} onPress={() => this.props.route.params.navigation.navigate('Ship', {shipData: item, navigation: this.props.route.params.navigation}, {title:item.names.en})}>
-          <FastImage source={{uri: item.thumbnail, priority: FastImage.priority.normal}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}} resizeMode={FastImage.resizeMode.cover}/>
+      }, shadowOpacity: 0.3, shadowRadius: 20,opacity, transform:[{scale}]}} onPress={() => this.props.route.params.navigation.navigate('Ship', {shipData: item, navigation: this.props.route.params.navigation}, {title:item.names})}>
+          <FastImage source={{uri: item.portraitLink, priority: FastImage.priority.normal}} style={{width: 70, height: 70, marginRight: 10, borderRadius: 70}} resizeMode={FastImage.resizeMode.cover}/>
           <View>
-            <Text style={{fontSize: 14, fontWeight: '700'}}>{item.names.en}</Text>
-            <Text style={{fontSize: 12, opacity: .7}}>{item.hullType}</Text>
+            <Text style={{fontSize: 14, fontWeight: '700'}}>{item.name}</Text>
+            <Text style={{fontSize: 12, opacity: .7}}>{item.classification}</Text>
             <Text style={{fontSize: 10, opacity: .8, color: colorType}}>{item.rarity}</Text>
           </View>
       </AnimatedTouchable>
@@ -216,7 +213,7 @@ class Home extends React.Component<Iprops,IState> {
     } else {
       let dataToSearch = this.state.dataBackup
       query = query.toLowerCase()
-      dataToSearch = dataToSearch.filter((x:any) => x.names.en.toLowerCase().match(query))
+      dataToSearch = dataToSearch.filter((x:any) => x.name.toLowerCase().match(query))
       this.setState({
         shipsData: dataToSearch
       })
